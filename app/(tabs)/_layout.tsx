@@ -35,6 +35,24 @@ export default function TabLayout() {
                 title: 'Explore',
               }}
             />
+            <Tabs.Screen
+              name="quests"
+              options={{
+                title: 'Quests',
+              }}
+            />
+            <Tabs.Screen
+              name="studying"
+              options={{
+                title: 'Studying',
+              }}
+            />
+            <Tabs.Screen
+              name="profile"
+              options={{
+                title: 'Profile',
+              }}
+            />
           </Tabs>
         </View>
 

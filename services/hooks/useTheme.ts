@@ -18,10 +18,18 @@ export const useTheme = () => {
       name: themeKey,
       theme: theme,
     });
+
+    console.log(theme);
+  };
+
+  const toggleTheme = () => {
+    const newTheme = currentTheme.name === 'dark' ? 'light' : 'dark';
+    changeTheme(newTheme);
   };
 
   return {
     currentTheme,
     changeTheme,
+    toggleTheme,
   };
 };

@@ -10,7 +10,7 @@ type Props = {
     onPress?: () => void
 }
 
-type buttonType = 'primary' | 'secondary' | 'signin'
+type buttonType = 'primary' | 'secondary' | 'signin' | 'danger'
 
 const Button = ({ children, icon, onPress = () => { }, type = 'secondary' }: Props) => {
     const { currentTheme } = useTheme();
@@ -23,7 +23,6 @@ const Button = ({ children, icon, onPress = () => { }, type = 'secondary' }: Pro
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 8,
-                // maxHeight: 30,
                 backgroundColor: currentTheme.theme['--brand-01'],
                 borderColor: currentTheme.theme['--brand-05'],
                 borderWidth: 1,
@@ -68,6 +67,24 @@ const Button = ({ children, icon, onPress = () => { }, type = 'secondary' }: Pro
                 color: currentTheme.theme['--primary-text'],
                 fontSize: 14,
             }
+        }),
+        danger: StyleSheet.create({
+            btn: {
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                backgroundColor: 'transparent',
+                borderColor: currentTheme.theme['--alert'],
+                borderWidth: 1,
+                borderRadius: 8,
+                padding: 5,
+            },
+            btnText: {
+                color: currentTheme.theme['--alert'],
+                fontSize: 12,
+            }
         })
     }
 
@@ -75,6 +92,8 @@ const Button = ({ children, icon, onPress = () => { }, type = 'secondary' }: Pro
         switch (type) {
             case 'primary':
                 return currentTheme.theme['--brand'];
+            case 'danger':
+                return currentTheme.theme['--alert'];
             default:
                 return currentTheme.theme['--primary-text'];
         }
@@ -87,6 +106,8 @@ const Button = ({ children, icon, onPress = () => { }, type = 'secondary' }: Pro
                 return stylesList.secondary[key as keyof typeof stylesList.secondary];
             case 'signin':
                 return stylesList.signin[key as keyof typeof stylesList.signin];
+            case 'danger':
+                return stylesList.danger[key as keyof typeof stylesList.danger];
             default:
                 return {}
         }

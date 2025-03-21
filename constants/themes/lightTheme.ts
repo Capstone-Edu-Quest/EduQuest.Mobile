@@ -3,7 +3,7 @@ export const lightTheme = {
     '--background': '#FFFFFF',
     '--primary-bg': '#FDF4F1',
     '--secondary-bg': '#F6ECE9',
-    '--tertiary-bg': '#FFECE6',
+    '--tertiary-bg': '#edd7d1',
     '--quaternary-bg': '#FFCBA4',
     '--quaternary-bg-04': 'rgba(249, 117, 22, 0.1)',
     '--quaternary-bg-015': 'rgba(249, 117, 22, 0.05)',
@@ -18,10 +18,10 @@ export const lightTheme = {
     '--brand-focused': '#F44900',
     '--disabled-text': '#ded0c5',
   
-    '--primary-text': ' #20232A',
-    '--secondary-text': ' #4F5B6E',
-    '--tertiary-text': ' #6D7686',
-    '--quaternary-text': ' #9CA3AF',
+    '--primary-text': '#20232A',
+    '--secondary-text': '#4F5B6E',
+    '--tertiary-text': '#6D7686',
+    '--quaternary-text': '#9CA3AF',
   
     '--success': '#65f098',
     '--warning': '#fac873',

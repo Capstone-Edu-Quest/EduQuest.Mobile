@@ -4,9 +4,11 @@ import { useTheme } from '@/services/hooks/useTheme';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Button from './Button';
 
-type Props = {}
+type Props = {
+    isPurchased?: boolean;
+}
 
-const CourseItemHorizontal = (props: Props) => {
+const CourseItemHorizontal = ({ isPurchased = false }: Props) => {
     const { currentTheme } = useTheme();
 
     const styles = StyleSheet.create({
@@ -26,7 +28,7 @@ const CourseItemHorizontal = (props: Props) => {
         recommendedCoursesItemInfo: {
             flex: 1,
             paddingHorizontal: 8,
-            paddingBottom: 6
+            paddingBottom: 2
         },
         recommendedCoursesItemTitle: {
             fontSize: 11,
@@ -67,10 +69,34 @@ const CourseItemHorizontal = (props: Props) => {
             alignItems: 'center',
             marginTop: 8,
             gap: 8,
+        },
+        progressBar: {
+            height: 13,
+            backgroundColor: currentTheme.theme['--tertiary-bg'],
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 12,
+            position: 'relative',
+            overflow: 'hidden',
+            borderRadius: 5,
+        },
+        progressFill: {
+            height: '100%',
+            backgroundColor: currentTheme.theme['--brand'],
+            position: 'absolute',
+            left: 0,
+            top: 0,
+        },
+        progressText: {
+            top: 0,
+            fontSize: 9,
+            color: currentTheme.theme['--primary-text'],
+            zIndex: 999,
         }
     })
 
     const currentStar = 3.5;
+    const progressPercentage = 20; // Example progress percentage
     return (
         <View style={styles.recommendedCoursesItem}>
             <Image source={require('@/assets/images/demo-course-thumb.webp')} style={styles.recommendedCoursesItemImage} />
@@ -86,10 +112,22 @@ const CourseItemHorizontal = (props: Props) => {
                     }
                     <Text style={styles.numberOfRatings}>({(11432).toLocaleString()})</Text>
                 </View>
-                <Text style={styles.recommendedCoursesItemPrice}>$99</Text>
+
+                {isPurchased ? (
+                    <View style={styles.progressBar}>
+                        <View style={[styles.progressFill, { width: `${progressPercentage}%` }]} />
+                        <Text style={styles.progressText}>{progressPercentage}%</Text>
+                    </View>
+                ) : (
+                    <Text style={styles.recommendedCoursesItemPrice}>$99</Text>
+                )}
                 <View style={styles.recommendedCoursesItemActions}>
-                    <Button onPress={() => { }} type="primary">Add to cart</Button>
-                    <FontAwesome name="heart" size={15} color={currentTheme.theme['--brand-light']} />
+                    {!isPurchased && (
+                        <>
+                            <Button onPress={() => { }} type="primary">Add to cart</Button>
+                            <FontAwesome name="heart" size={15} color={currentTheme.theme['--brand-light']} />
+                        </>
+                    )}
                 </View>
             </View>
         </View>

@@ -47,8 +47,8 @@ export default function HomeScreen() {
 
   });
 
-  const onViewAllCourse = () => {
-    router.push('/(tabs)/explore');
+  const onViewAllCourse = (path: string) => {
+    router.push('/(tabs)/' + path as any);
   }
 
   return (
@@ -56,7 +56,7 @@ export default function HomeScreen() {
       <Text style={styles.welcomeText}>Welcome back, Khang <FontAwesome name="bolt" size={14} color={currentTheme.theme['--brand']} /></Text>
       <View style={styles.recommendedCoursesTitleContainer}>
         <Text style={styles.recommendedCoursesTitle}>Recommend</Text>
-        <Text style={styles.recommendedCoursesTitleLink} onPress={onViewAllCourse} >View all <FontAwesome name="angle-right" size={14} color={currentTheme.theme['--secondary-text']} /></Text>
+        <Text style={styles.recommendedCoursesTitleLink} onPress={() => onViewAllCourse('explore')} >Explore <FontAwesome name="angle-right" size={14} color={currentTheme.theme['--secondary-text']} /></Text>
       </View>
       <ScrollView horizontal style={styles.recommendedCoursesContainer}>
         <CourseItem />
@@ -67,7 +67,10 @@ export default function HomeScreen() {
         <CourseItem />
       </ScrollView>
 
-      <Text style={{ ...styles.recommendedCoursesTitle, marginTop: 18 }}>Studying</Text>
+      <View style={{ ...styles.recommendedCoursesTitleContainer, marginTop: 24 }}>
+        <Text style={styles.recommendedCoursesTitle}>Studying</Text>
+        <Text style={styles.recommendedCoursesTitleLink} onPress={() => onViewAllCourse('studying')} >View all <FontAwesome name="angle-right" size={14} color={currentTheme.theme['--secondary-text']} /></Text>
+      </View>
       <ScrollView horizontal style={styles.recommendedCoursesContainer}>
         <CourseItem />
         <CourseItem />
