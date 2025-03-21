@@ -24,9 +24,9 @@ const CustomHeaderBar = (props: Props) => {
             paddingRight: 18,
             backgroundColor: currentTheme.theme['--primary-bg'],
             shadowColor: currentTheme.theme['--quaternary-bg'],
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.3,
-            shadowRadius: 4,
+            shadowOffset: { width: 0, height: 3 },
+            shadowOpacity: 0.2,
+            shadowRadius: 2,
             elevation: 5,
             paddingBottom: 12
         },

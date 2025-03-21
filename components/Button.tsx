@@ -23,17 +23,16 @@ const Button = ({ children, icon, onPress = () => { }, type = 'secondary' }: Pro
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 8,
-                maxHeight: 40,
+                // maxHeight: 30,
                 backgroundColor: currentTheme.theme['--brand-01'],
                 borderColor: currentTheme.theme['--brand-05'],
                 borderWidth: 1,
-                borderRadius: 10,
-                padding: 10,
-                marginBottom: 20
+                borderRadius: 8,
+                padding: 5,
             },
             btnText: {
                 color: currentTheme.theme['--brand'],
-                fontSize: 12,
+                fontSize: 11,
             }
         }),
         secondary: StyleSheet.create({

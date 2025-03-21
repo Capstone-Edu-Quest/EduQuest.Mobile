@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useRouter } from 'expo-router';
+import { useRouter, useSegments } from 'expo-router';
 import { useTheme } from '@/services/hooks/useTheme';
 
 type Props = {
@@ -9,25 +9,34 @@ type Props = {
 };
 
 const bottomBarItems = [
-    { name: 'Explore', icon: 'search', route: '/Explore' },
-    { name: 'Quests', icon: 'crosshairs', route: '/quests' },
-    { name: 'Studying', icon: 'book', route: '/studying' },
-    { name: 'Profile', icon: 'user', route: '/profile' },
+    { name: 'Home', icon: 'home', route: '/(tabs)' },
+    { name: 'Explore', icon: 'search', route: '/(tabs)/explore' },
+    { name: 'Quests', icon: 'crosshairs', route: '/(tabs)/quests' },
+    { name: 'Studying', icon: 'book', route: '/(tabs)/studying' },
+    { name: 'Profile', icon: 'user', route: '/(tabs)/profile' },
 ]
 
 const CustomBottomBar = () => {
     const { currentTheme } = useTheme();
     const router = useRouter();
+    const segments = useSegments();
+
+    const [pathname, setPathname] = useState(segments.join('/'));
+
+    useEffect(() => {
+        setPathname(`/${segments.join('/')}`); // Update when segments change
+    }, [segments]);
 
     const styles = StyleSheet.create({
         container: {
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
-            position: 'fixed',
-            top: '90%',
-            left: 0,
-            right: 0,
+            zIndex: 999,
+            position: 'absolute',
+            bottom: 0,
+            left: '50%',
+            transform: [{ translateX: '-50%' }],
             backgroundColor: currentTheme.theme['--secondary-bg'],
             borderTopLeftRadius: 30,
             borderTopRightRadius: 30,
@@ -57,8 +66,12 @@ const CustomBottomBar = () => {
                         style={styles.item}
                         onPress={() => router.push(item.route as any)}
                     >
-                        <FontAwesome name={item.icon} size={18} color={currentTheme.theme['--primary-text']} />
-                        <Text style={styles.text}>{item.name}</Text>
+                        <FontAwesome
+                            name={item.icon}
+                            size={18}
+                            color={pathname === item.route ? currentTheme.theme['--brand'] : currentTheme.theme['--primary-text']}
+                        />
+                        <Text style={{ ...styles.text, color: pathname === item.route ? currentTheme.theme['--brand'] : currentTheme.theme['--primary-text'] }}>{item.name}</Text>
                     </TouchableOpacity>
                 ))
             ) : (

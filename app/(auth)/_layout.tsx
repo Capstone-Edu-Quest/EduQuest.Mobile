@@ -21,8 +21,6 @@ export default function AuthLayout() {
       <Tabs screenOptions={{ headerShown: false, tabBarStyle: { display: 'none' } }}>
         <Tabs.Screen name="signin" />
       </Tabs>
-
-      <Text style={{ color: currentTheme.theme['--primary-text'] }}>Hello</Text>
     </SafeAreaView>
   );
 }
