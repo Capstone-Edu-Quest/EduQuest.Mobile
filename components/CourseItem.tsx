@@ -1,8 +1,9 @@
 import { useTheme } from '@/services/hooks/useTheme';
 import React from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Button from './Button';
+import { router } from 'expo-router';
 
 type Props = {}
 
@@ -67,11 +68,15 @@ const CourseItem = (props: Props) => {
             paddingHorizontal: 8,
             gap: 8,
           }
-    })
+    });
+
+    const onViewCourseDetails = () => {
+        router.push('/(courses)/123');
+    }
 
     const currentStar = 3.5;
     return (
-        <View style={styles.recommendedCoursesItem}>
+        <TouchableOpacity style={styles.recommendedCoursesItem} onPress={onViewCourseDetails}>
             <Image source={require('@/assets/images/demo-course-thumb.webp')} style={styles.recommendedCoursesItemImage} />
             <Text style={styles.recommendedCoursesItemTitle} numberOfLines={2} ellipsizeMode="tail">Course Name Course Name Course Name Course Name Course Name</Text>
             <Text style={styles.recommendedCoursesItemAuthor}>Author Name</Text>
@@ -89,7 +94,7 @@ const CourseItem = (props: Props) => {
                 <Button onPress={() => {}} type="primary">Add to cart</Button>
                 <FontAwesome name="heart" size={15} color={currentTheme.theme['--brand-light']} />
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

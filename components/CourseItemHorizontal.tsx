@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTheme } from '@/services/hooks/useTheme';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Button from './Button';
+import { router } from 'expo-router';
 
 type Props = {
     isPurchased?: boolean;
@@ -94,12 +95,16 @@ const CourseItemHorizontal = ({ isPurchased = false, isInCart = false }: Props) 
             color: currentTheme.theme['--primary-text'],
             zIndex: 999,
         }
-    })
+    });
+
+    const onViewCourseDetails = () => {
+        router.push('/(courses)/123');
+    }
 
     const currentStar = 3.5;
     const progressPercentage = 20; // Example progress percentage
     return (
-        <View style={styles.recommendedCoursesItem}>
+        <TouchableOpacity style={styles.recommendedCoursesItem} onPress={onViewCourseDetails}>
             <Image source={require('@/assets/images/demo-course-thumb.webp')} style={styles.recommendedCoursesItemImage} />
             <View style={styles.recommendedCoursesItemInfo}>
                 <Text style={styles.recommendedCoursesItemTitle} numberOfLines={2} ellipsizeMode="tail">Course Name Course Name Course Name Course Name Course Name</Text>
@@ -131,7 +136,7 @@ const CourseItemHorizontal = ({ isPurchased = false, isInCart = false }: Props) 
                     )}
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

@@ -18,8 +18,6 @@ export const useTheme = () => {
       name: themeKey,
       theme: theme,
     });
-
-    console.log(theme);
   };
 
   const toggleTheme = () => {

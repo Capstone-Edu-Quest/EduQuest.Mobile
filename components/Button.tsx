@@ -8,12 +8,13 @@ type Props = {
     icon?: string,
     type?: buttonType,
     onPress?: () => void,
-    height?: number
+    height?: number,
+    fontSize?: number
 }
 
 type buttonType = 'primary' | 'secondary' | 'signin' | 'danger'
 
-const Button = ({ children, icon, onPress = () => { }, type = 'secondary', height = 25 }: Props) => {
+const Button = ({ children, icon, onPress = () => { }, type = 'secondary', height = 25, fontSize = 11 }: Props) => {
     const { currentTheme } = useTheme();
 
     const stylesList = {
@@ -33,7 +34,7 @@ const Button = ({ children, icon, onPress = () => { }, type = 'secondary', heigh
             },
             btnText: {
                 color: currentTheme.theme['--brand'],
-                fontSize: 11,
+                fontSize: fontSize,
             }
         }),
         secondary: StyleSheet.create({

@@ -3,6 +3,7 @@
 import { darkTheme } from "@/constants/themes/darkTheme";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface IAppreanceStoreProps {
   currentTheme: CurrentTheme;
@@ -30,7 +31,7 @@ export const useAppreanceStore = create<IAppreanceStoreProps>()(
     }),
     {
       name: "appreance-store",
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
 );
