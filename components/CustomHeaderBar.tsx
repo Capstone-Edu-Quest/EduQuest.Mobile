@@ -63,13 +63,13 @@ const CustomHeaderBar = (props: Props) => {
                     style={styles.icon}
                     onPress={() => { }}
                 >
-                    <FontAwesome name="heart-o" size={16} color={currentTheme.theme['--primary-text']} />
+                    <FontAwesome name="heart-o" size={16} color={currentTheme.theme['--primary-text']} onPress={() => router.push('/(tabs)/wishlist')} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={{ ...styles.icon, transform: [{ translateY: -1 }] }}
                     onPress={() => { }}
                 >
-                    <FontAwesome name="shopping-cart" size={16} color={currentTheme.theme['--primary-text']} />
+                    <FontAwesome name="shopping-cart" size={16} color={currentTheme.theme['--primary-text']} onPress={() => router.push('/(tabs)/cart')}  />
                 </TouchableOpacity>
             </View>
         </View>

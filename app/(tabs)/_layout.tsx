@@ -48,6 +48,18 @@ export default function TabLayout() {
               }}
             />
             <Tabs.Screen
+              name="wishlist"
+              options={{
+                title: 'Wishlist',
+              }}
+            />
+            <Tabs.Screen
+              name="cart"
+              options={{
+                title: 'Cart',
+              }}
+            />
+            <Tabs.Screen
               name="profile"
               options={{
                 title: 'Profile',

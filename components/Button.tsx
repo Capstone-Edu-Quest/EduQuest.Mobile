@@ -7,12 +7,13 @@ type Props = {
     children?: ReactNode,
     icon?: string,
     type?: buttonType,
-    onPress?: () => void
+    onPress?: () => void,
+    height?: number
 }
 
 type buttonType = 'primary' | 'secondary' | 'signin' | 'danger'
 
-const Button = ({ children, icon, onPress = () => { }, type = 'secondary' }: Props) => {
+const Button = ({ children, icon, onPress = () => { }, type = 'secondary', height = 25 }: Props) => {
     const { currentTheme } = useTheme();
 
     const stylesList = {
@@ -28,6 +29,7 @@ const Button = ({ children, icon, onPress = () => { }, type = 'secondary' }: Pro
                 borderWidth: 1,
                 borderRadius: 8,
                 padding: 5,
+                height: height,
             },
             btnText: {
                 color: currentTheme.theme['--brand'],

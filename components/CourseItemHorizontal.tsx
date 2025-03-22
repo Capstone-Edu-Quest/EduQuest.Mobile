@@ -6,9 +6,10 @@ import Button from './Button';
 
 type Props = {
     isPurchased?: boolean;
+    isInCart?: boolean;
 }
 
-const CourseItemHorizontal = ({ isPurchased = false }: Props) => {
+const CourseItemHorizontal = ({ isPurchased = false, isInCart = false }: Props) => {
     const { currentTheme } = useTheme();
 
     const styles = StyleSheet.create({
@@ -28,7 +29,7 @@ const CourseItemHorizontal = ({ isPurchased = false }: Props) => {
         recommendedCoursesItemInfo: {
             flex: 1,
             paddingHorizontal: 8,
-            paddingBottom: 2
+            paddingBottom: 8
         },
         recommendedCoursesItemTitle: {
             fontSize: 11,
@@ -124,7 +125,7 @@ const CourseItemHorizontal = ({ isPurchased = false }: Props) => {
                 <View style={styles.recommendedCoursesItemActions}>
                     {!isPurchased && (
                         <>
-                            <Button onPress={() => { }} type="primary">Add to cart</Button>
+                            <Button onPress={() => { }} type="primary">{isInCart ? 'Remove from cart' : 'Add to cart'}</Button>
                             <FontAwesome name="heart" size={15} color={currentTheme.theme['--brand-light']} />
                         </>
                     )}
