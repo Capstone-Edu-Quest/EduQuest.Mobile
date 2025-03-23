@@ -13,7 +13,7 @@ const index = (props: Props) => {
 
     return (
         <View>
-            <Text>index</Text>
+            <Text>course screen</Text>
         </View>
     )
 }
