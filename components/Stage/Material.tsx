@@ -1,7 +1,9 @@
+import { useModal } from '@/services/hooks/useModal'
 import { useTheme } from '@/services/hooks/useTheme'
 import { FontAwesome } from '@expo/vector-icons'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import StageInfoModal from './MaterialInfo'
 
 type Props = {
     status?: 'current' | 'locked' | 'done'
@@ -9,6 +11,7 @@ type Props = {
 
 const StageItem = ({ status = 'locked' }: Props) => {
     const { currentTheme } = useTheme();
+    const { showBottomModal } = useModal();
 
     const styles = StyleSheet.create({
         stageItem: {
@@ -67,12 +70,35 @@ const StageItem = ({ status = 'locked' }: Props) => {
         }
     }
 
+    const handleShowStageInfoModal = () => {
+        showBottomModal(
+            <StageInfoModal />
+        )
+    }
+
+    const handleViewMaterialInfo = () => {
+
+    }
+
+    const handlePressAction = () => {
+        switch (status) {
+            case 'current':
+            case 'done':
+                handleViewMaterialInfo();
+                break;
+            case 'locked':
+            default:
+                handleShowStageInfoModal();
+        }
+    }
+
+
     return (
-        <View style={styles.stageItem}>
+        <TouchableOpacity style={styles.stageItem} onPress={handlePressAction} onLongPress={handleShowStageInfoModal}>
             <View style={styles.stageItemSurface}>
                 <FontAwesome style={styles.stageItemIcon} name={getStageItemIcon()} size={20} color={getStageItemIconColor()} />
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

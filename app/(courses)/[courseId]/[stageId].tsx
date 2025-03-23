@@ -3,8 +3,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import { useTheme } from '@/services/hooks/useTheme';
-import StageItem from '@/components/Stage/StageItem';
-import StagesCtn from '@/components/Stage/StagesCtn';
+import StageItem from '@/components/Stage/Material';
+import StagesCtn from '@/components/Stage/StageMaterials';
 
 type Props = {}
 

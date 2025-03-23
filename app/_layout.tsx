@@ -1,4 +1,4 @@
-import { router, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 import { useFonts } from 'expo-font';
 import { ActivityIndicator } from 'react-native';
@@ -6,7 +6,7 @@ import { View } from 'react-native';
 import { ThemeProvider } from '@react-navigation/native';
 import { useTheme } from '@/services/hooks/useTheme';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import BottomModal from '@/components/BottomModal';
 
 export default function RootLayout() {
   const { currentTheme } = useTheme();
@@ -43,13 +43,15 @@ export default function RootLayout() {
         }
       }}
     >
-      <StatusBar style={currentTheme.name === 'dark' ? 'light' : 'dark'} animated  />
+      <StatusBar style={currentTheme.name === 'dark' ? 'light' : 'dark'} animated />
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(courses)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
+      <BottomModal />
+
     </ThemeProvider>
   );
 }
