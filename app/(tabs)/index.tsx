@@ -1,7 +1,7 @@
 import CourseItem from '@/components/CourseItem';
 import { useTheme } from '@/services/hooks/useTheme';
 import { router } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 

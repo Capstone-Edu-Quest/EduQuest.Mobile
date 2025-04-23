@@ -3,11 +3,12 @@ import { FontAwesome } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import LessonMaterial from './LessonMaterial'
+import { ILessonOverview } from '@/interfaces/courseInterfaces'
 type Props = {
-    lessonNo: number;
+    lesson: ILessonOverview;
 }
 
-const LessonItem = ({ lessonNo }: Props) => {
+const LessonItem = ({ lesson }: Props) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const { currentTheme } = useTheme();
 
@@ -53,15 +54,15 @@ const LessonItem = ({ lessonNo }: Props) => {
             <TouchableOpacity style={styles.lessonInfo} onPress={onToggleLesson}>
                 <FontAwesome name={isOpen ? 'angle-down' : 'angle-right'} size={18} color={currentTheme.theme['--primary-text']} />
                 <View>
-                    <Text style={styles.lessonInfoText}>Lesson {lessonNo}</Text>
-                    <Text style={styles.lessonInfoTextSecondary}><FontAwesome name="clock-o" size={11} color={currentTheme.theme['--secondary-text']} /> 20 minutes</Text>
+                    <Text style={styles.lessonInfoText}>Lesson {lesson.index + 1}</Text>
+                    <Text style={styles.lessonInfoTextSecondary}><FontAwesome name="clock-o" size={11} color={currentTheme.theme['--secondary-text']} /> {Math.round(lesson.totalTime)} minutes</Text>
                 </View>
             </TouchableOpacity>
             {isOpen &&
                 <View style={styles.materialContainer}>
                     {
-                        Array(4).fill(1).map((_, index) => (
-                            <LessonMaterial key={index} lessonNo={index + 1} />
+                        lesson.materials.map((material, index) => (
+                            <LessonMaterial key={material.id} material={material} i={index} />
                         ))
                     }
                 </View>}

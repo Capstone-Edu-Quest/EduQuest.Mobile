@@ -59,7 +59,7 @@ const CustomHeaderBar = (props: Props) => {
                 <Text style={styles.text}>Edu Quest</Text>
             </View>
             <View style={styles.iconContainer}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={styles.icon}
                     onPress={() => { }}
                 >
@@ -70,7 +70,7 @@ const CustomHeaderBar = (props: Props) => {
                     onPress={() => { }}
                 >
                     <FontAwesome name="shopping-cart" size={16} color={currentTheme.theme['--primary-text']} onPress={() => router.push('/(tabs)/cart')}  />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </View>
     );

@@ -7,12 +7,6 @@ import CustomHeaderBar from '@/components/CustomHeaderBar';
 import CustomBottomBar from '@/components/CustomBottomBar';
 
 export default function TabLayout() {
-  const router = useRouter();
-  const { currentTheme } = useTheme();
-
-  useEffect(() => {
-    // router.replace('/(auth)/signin');
-  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, position: 'relative' }}>
@@ -29,22 +23,22 @@ export default function TabLayout() {
                 title: 'Home',
               }}
             />
-            <Tabs.Screen
+            {/* <Tabs.Screen
               name="explore"
               options={{
                 title: 'Explore',
+              }}
+            /> */}
+            <Tabs.Screen
+              name="studying"
+              options={{
+                title: 'Studying',
               }}
             />
             <Tabs.Screen
               name="quests"
               options={{
                 title: 'Quests',
-              }}
-            />
-            <Tabs.Screen
-              name="studying"
-              options={{
-                title: 'Studying',
               }}
             />
             <Tabs.Screen

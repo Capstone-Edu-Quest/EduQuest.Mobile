@@ -3,23 +3,26 @@ import { ScrollView, Text, StyleSheet, View, Switch } from 'react-native';
 import { useTheme } from '@/services/hooks/useTheme';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Button from '@/components/Button';
+import { router } from 'expo-router';
+import { useUserStore } from '@/store/userStore';
 
 type Props = {}
 
 const ProfileScreen = (props: Props) => {
+    const { user, setUser, setToken } = useUserStore();
     const { currentTheme, toggleTheme } = useTheme();
 
     const statistics = [
-        { icon: 'trophy', label: 'Rank', value: '#1' },
-        { icon: 'fire', label: 'Highest Learning Streak', value: '22 days' },
-        { icon: 'hourglass', label: 'Total Learning Time', value: '232 minutes' },
-        { icon: 'book', label: 'Total Courses Completed', value: '12' },
-        { icon: 'star', label: 'Favorite Topics', value: 'Typescript' },
+        { icon: 'trophy', label: 'Rank', value: user?.statistic?.rank },
+        { icon: 'fire', label: 'Highest Learning Streak', value: `${user?.statistic?.longestStreak} days` },
+        { icon: 'circle', label: 'Gold', value: `${user?.statistic?.gold ?? 0} golds` },
+        { icon: 'spinner', label: 'Level', value: `${user?.statistic?.level ?? 0} (${user?.statistic?.exp ?? 0}/${user?.statistic?.maxExpLevel ?? 0})` },
+        // { icon: 'star', label: 'Favorite Topics', value: 'Typescript' },
     ];
 
     const personalInfo = [
-        { icon: 'envelope', label: 'Email', value: 'khang@example.com' },
-        { icon: 'phone', label: 'Phone', value: '+1234567890' }
+        { icon: 'envelope', label: 'Email', value: user?.email },
+        { icon: 'phone', label: 'Phone', value: user?.phone }
     ];
 
     const styles = StyleSheet.create({
@@ -75,9 +78,15 @@ const ProfileScreen = (props: Props) => {
         },
     });
 
+    const onSignOut = () => {
+        setUser(null)
+        setToken(null)
+        router.replace("/(auth)");
+    }
+
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.title}>Gia Khang</Text>
+            <Text style={styles.title}>{user?.username}</Text>
 
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Personal Information</Text>
@@ -125,7 +134,7 @@ const ProfileScreen = (props: Props) => {
             <View style={styles.sectionLine} />
 
             <View style={{ marginTop: 40 }}>
-                <Button type="danger" onPress={() => { }}>
+                <Button type="danger" onPress={onSignOut}>
                     Sign Out
                 </Button>
             </View>

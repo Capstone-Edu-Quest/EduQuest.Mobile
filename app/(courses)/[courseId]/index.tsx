@@ -1,10 +1,12 @@
 import Button from '@/components/Button';
 import LessonItem from '@/components/Lesson/LessonItem';
+import { ICourse } from '@/interfaces/courseInterfaces';
+import { getCourseById } from '@/services/apis/coursesApis';
 import { useTheme } from '@/services/hooks/useTheme';
 import { FontAwesome } from '@expo/vector-icons';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import React from 'react'
-import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useCallback, useState } from 'react'
+import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
 
 type Props = {}
 
@@ -12,6 +14,34 @@ const courseDetailts = (props: Props) => {
   const { courseId } = useLocalSearchParams();
   const { currentTheme } = useTheme();
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [course, setCourse] = useState<ICourse | null>(null)
+
+  useFocusEffect(
+    useCallback(() => {
+      onInitCourse()
+    }, [])
+  );
+
+  const onInitCourse = () => {
+    if (!courseId) return;
+
+    setIsLoading(true);
+    getCourseById(courseId as string).then(res => {
+      const { errors, isError, message, payload } = res.data;
+
+
+      if (isError) {
+        Alert.alert(message?.content)
+        return
+      }
+
+      setCourse(payload)
+    }).finally(() => {
+      setIsLoading(false)
+    })
+  }
 
   const styles = StyleSheet.create({
     scrollView: {
@@ -114,23 +144,22 @@ const courseDetailts = (props: Props) => {
     }
   });
 
-  const currentStar = 3.5;
   const instructorItems = [
     {
       icon: 'book',
-      value: '12 Courses'
+      value: `${course?.author.totalCourseCreated} courses`
     },
     {
       icon: 'user',
-      value: '12.345 Learners'
+      value: `${course?.author.totalLearner} Learners`
     },
     {
       icon: 'comments',
-      value: '12.345 Reviews'
+      value: `${course?.author.totalReview} Reviews`
     },
     {
       icon: 'star',
-      value: '4.5'
+      value: `${course?.author.rating ?? 0}`
     },
   ]
 
@@ -140,85 +169,89 @@ const courseDetailts = (props: Props) => {
 
   return (
     <SafeAreaView style={{ flex: 1, }}>
-      <ScrollView style={styles.scrollView}>
+      {
+        isLoading
+          ? <ActivityIndicator size="large" color={currentTheme.theme['--brand']} />
+          :
+          course &&
+          <ScrollView style={styles.scrollView}>
 
-        <TouchableOpacity style={styles.backButton} onPress={onBack}>
-          <FontAwesome name="angle-left" size={20} color={currentTheme.theme['--secondary-text']} />
-          <Text style={styles.backButtonText}>Back</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.backButton} onPress={onBack}>
+              <FontAwesome name="angle-left" size={20} color={currentTheme.theme['--secondary-text']} />
+              <Text style={styles.backButtonText}>Back</Text>
+            </TouchableOpacity>
+            <Image
+              source={{ uri: course.photoUrl }}
+              style={{ width: '100%', height: 200, borderRadius: 20 }}
+              resizeMode="cover"
+            />
 
-        <TouchableOpacity onPress={() => router.push(`/(courses)/${courseId}/1`)}>
-          <Text style={{ color: 'white' }}>Test stage</Text>
-        </TouchableOpacity>
-
-        <Image
-          source={require('@/assets/images/demo-course-thumb.webp')}
-          style={{ width: '100%', height: 200, borderRadius: 20 }}
-          resizeMode="cover"
-        />
-        <Text style={styles.title}>Mastering Typescript</Text>
-        <View style={styles.row}>
-          <View style={styles.recommendedCoursesItemRating}>
-            <Text style={styles.recommendedCoursesItemRatingText}>{currentStar}</Text>
-            {
-              Array.from({ length: 5 }).map((_, index) => (
-                <FontAwesome key={index} name="star" size={12} color={Math.floor(currentStar) > index ? currentTheme.theme['--brand-light'] : currentTheme.theme['--quaternary-text']} />
-              ))
-            }
-            <Text style={styles.numberOfRatings}>({(11432).toLocaleString()})</Text>
-          </View>
-          <Text style={[styles.text]}>· 1253 learners</Text>
-        </View>
-
-        <Text style={styles.price}>$125</Text>
-        <View style={styles.recommendedCoursesItemActions}>
-          <Button height={30} fontSize={13} onPress={() => { }} type="primary">Add to cart</Button>
-          <FontAwesome name="heart" size={20} color={currentTheme.theme['--brand-light']} />
-        </View>
-
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Instructor</Text>
-          <Text style={styles.sectionName}>John Doe</Text>
-          <Text style={styles.sectionPosition}>Senior Software Engineer @ Shopee</Text>
-        </View>
-        <View style={styles.statsCtn}>
-          {
-            instructorItems.map((item, index) => (
-              <View key={index} style={styles.statsItem}>
-                <FontAwesome name={item.icon as any} size={10} color={currentTheme.theme['--secondary-text']} />
-                <Text style={styles.statsItemText}>{item.value}</Text>
+            <Text style={styles.title}>{course?.title}</Text>
+            <View style={styles.row}>
+              <View style={styles.recommendedCoursesItemRating}>
+                <Text style={styles.recommendedCoursesItemRatingText}>{course?.rating ?? 0}</Text>
+                {
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <FontAwesome key={index} name="star" size={12} color={Math.floor(course?.rating ?? 0) > index ? currentTheme.theme['--brand-light'] : currentTheme.theme['--quaternary-text']} />
+                  ))
+                }
+                <Text style={styles.numberOfRatings}>({(Math.round(course.totalReview))})</Text>
               </View>
-            ))
-          }
-        </View>
+              <Text style={[styles.text]}>· {course?.totalLearner} learners</Text>
+            </View>
 
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Description</Text>
-          <Text style={styles.sectionText}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</Text>
-        </View>
+            <Text style={styles.price}>${course?.price}</Text>
+            <View style={styles.recommendedCoursesItemActions}>
+              <Button height={30} fontSize={13} onPress={() => router.push(`/(courses)/${courseId}/stages`)} type="primary">View Lessons</Button>
+            </View>
 
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Requirements</Text>
-          <Text style={styles.sectionText}>1. Lorem ipsum dolor sit amet consectetur adipisicing elit.</Text>
-          <Text style={styles.sectionText}>2. Lorem ipsum dolor sit amet consectetur adipisicing elit.</Text>
-          <Text style={styles.sectionText}>3. Lorem ipsum dolor sit amet consectetur adipisicing elit.</Text>
-        </View>
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Instructor</Text>
+              <Text style={styles.sectionName}>{course?.author.username}</Text>
+              <Text style={styles.sectionPosition}>{course?.author.headline}</Text>
+            </View>
+            <View style={styles.statsCtn}>
+              {
+                instructorItems.map((item, index) => (
+                  <View key={index} style={styles.statsItem}>
+                    <FontAwesome name={item.icon as any} size={10} color={currentTheme.theme['--secondary-text']} />
+                    <Text style={styles.statsItemText}>{item.value}</Text>
+                  </View>
+                ))
+              }
+            </View>
 
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Lessons</Text>
-          {/* <Text style={styles.sectionText}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</Text> */}
-        </View>
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Description</Text>
+              <Text style={styles.sectionText}>{course?.description}</Text>
+            </View>
 
-        <View style={styles.lessonContainer}>
-          {
-            Array(4).fill(1).map((_, index) => (
-              <LessonItem key={index} lessonNo={index + 1} />
-            ))
-          }
-        </View>
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Requirements</Text>
+              {
+                course.requirementList.map((req, i) => (
+                  <Text key={i} style={styles.sectionText}>{i + 1}. {req}</Text>
+                ))
+              }
+            </View>
+
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Lessons</Text>
+              {/* <Text style={styles.sectionText}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</Text> */}
+            </View>
+
+            <View style={styles.lessonContainer}>
+              {
+                course.listLesson.map((lesson, index) => (
+                  <LessonItem key={index} lesson={lesson} />
+                ))
+              }
+            </View>
 
 
-      </ScrollView>
+          </ScrollView>
+      }
+
     </SafeAreaView>
   )
 }

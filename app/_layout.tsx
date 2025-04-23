@@ -7,8 +7,11 @@ import { ThemeProvider } from '@react-navigation/native';
 import { useTheme } from '@/services/hooks/useTheme';
 import { StatusBar } from 'expo-status-bar';
 import BottomModal from '@/components/BottomModal';
+import { useEffect } from 'react';
+import { useUserStore } from '@/store/userStore';
 
 export default function RootLayout() {
+  const { user } = useUserStore();
   const { currentTheme } = useTheme();
   const [fontsLoaded] = useFonts({
     'BeVietnamPro-Black': require('../assets/fonts/BeVietnamPro-Black.ttf'),
@@ -44,7 +47,7 @@ export default function RootLayout() {
       }}
     >
       <StatusBar style={currentTheme.name === 'dark' ? 'light' : 'dark'} animated />
-      <Stack>
+      <Stack initialRouteName='(auth)'>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(courses)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />

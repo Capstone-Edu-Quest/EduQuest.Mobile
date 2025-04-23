@@ -9,15 +9,17 @@ type InputProps = {
     onChangeText: (text: string) => void;
     iconName?: string;
     onBlur?: () => void;
+    margin?: number;
+    secureTextEntry?: boolean;
 }
 
-const Input = ({ placeholder, value, onChangeText, iconName, onBlur = () => {} }: InputProps) => {
+const Input = ({ placeholder, value, onChangeText, iconName, onBlur = () => { }, margin = 10, secureTextEntry = false }: InputProps) => {
     const { currentTheme } = useTheme();
 
     const styles = StyleSheet.create({
         inputContainer: {
             width: '100%',
-            marginVertical: 10,
+            marginVertical: margin,
             flexDirection: 'row',
             alignItems: 'center',
             borderColor: currentTheme.theme['--quaternary-text'],
@@ -46,6 +48,8 @@ const Input = ({ placeholder, value, onChangeText, iconName, onBlur = () => {} }
                 value={value}
                 onChangeText={onChangeText}
                 onBlur={onBlur}
+                secureTextEntry={secureTextEntry}
+                autoCapitalize="none"
             />
             {iconName && <FontAwesome name={iconName} size={14} color={currentTheme.theme['--secondary-text']} style={styles.icon} />}
         </View>

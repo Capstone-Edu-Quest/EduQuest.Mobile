@@ -9,10 +9,10 @@ type Props = {
 };
 
 const bottomBarItems = [
-    { name: 'Home', icon: 'home', route: '/(tabs)' },
-    { name: 'Explore', icon: 'search', route: '/(tabs)/explore' },
-    { name: 'Quests', icon: 'crosshairs', route: '/(tabs)/quests' },
+    // { name: 'Home', icon: 'home', route: '/(tabs)' },
+    // { name: 'Explore', icon: 'search', route: '/(tabs)/explore' },
     { name: 'Studying', icon: 'book', route: '/(tabs)/studying' },
+    { name: 'Quests', icon: 'crosshairs', route: '/(tabs)/quests' },
     { name: 'Profile', icon: 'user', route: '/(tabs)/profile' },
 ]
 

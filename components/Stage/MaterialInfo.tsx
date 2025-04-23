@@ -20,7 +20,7 @@ const StageInfoModal = (props: Props) => {
             fontSize: 12,
             color: currentTheme.theme['--secondary-text'],
             marginTop: 3
-        }
+        },
     })
     return (
         <View style={styles.stageInfoModal}>

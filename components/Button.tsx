@@ -9,12 +9,13 @@ type Props = {
     type?: buttonType,
     onPress?: () => void,
     height?: number,
-    fontSize?: number
+    fontSize?: number,
+    disabled?: boolean
 }
 
 type buttonType = 'primary' | 'secondary' | 'signin' | 'danger'
 
-const Button = ({ children, icon, onPress = () => { }, type = 'secondary', height = 25, fontSize = 11 }: Props) => {
+const Button = ({ children, icon, onPress = () => { }, type = 'secondary', height = 25, fontSize = 11, disabled = false }: Props) => {
     const { currentTheme } = useTheme();
 
     const stylesList = {
@@ -31,6 +32,8 @@ const Button = ({ children, icon, onPress = () => { }, type = 'secondary', heigh
                 borderRadius: 8,
                 padding: 5,
                 height: height,
+                maxHeight: height,
+                width: '100%',
             },
             btnText: {
                 color: currentTheme.theme['--brand'],
@@ -116,7 +119,7 @@ const Button = ({ children, icon, onPress = () => { }, type = 'secondary', heigh
         }
     }
     return (
-        <Pressable style={getButtonStyle('btn')} onPress={onPress}>
+        <Pressable style={getButtonStyle('btn')} onPress={onPress} disabled={disabled}>
             {icon && <Icon name={icon} size={16} color={getIconColor()} />}
             <Text style={getButtonStyle('btnText')}>{children}</Text>
         </Pressable>

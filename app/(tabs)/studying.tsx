@@ -1,12 +1,29 @@
-import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, ScrollView, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { useTheme } from '@/services/hooks/useTheme';
 import CourseItemHorizontal from '@/components/CourseItemHorizontal';
+import { ICourseOverview } from '@/interfaces/courseInterfaces';
+import { useUserStore } from '@/store/userStore';
+import { getStudyingCourses } from '@/services/apis/coursesApis';
+import { useFocusEffect } from 'expo-router';
 
 type Props = {}
 
 const StudyingScreen = (props: Props) => {
   const { currentTheme } = useTheme();
+  const { token } = useUserStore();
+
+  const [isLoading, setIsloading] = useState<boolean>(false);
+  const [courses, setCourses] = useState<ICourseOverview[]>([]);
+
+
+  useFocusEffect(
+    useCallback(() => {
+      onInitStudyingCourses()
+
+    }, [])
+  );
+
 
   const styles = StyleSheet.create({
     container: {
@@ -23,18 +40,37 @@ const StudyingScreen = (props: Props) => {
     }
   });
 
+  const onInitStudyingCourses = () => {
+    if (!token?.accessToken) return;
+
+    setIsloading(true);
+    getStudyingCourses(token.accessToken).then(res => {
+      const { errors, isError, message, payload } = res.data;
+      if (isError) {
+        Alert.alert(message?.content)
+        return
+      }
+
+      setCourses(payload);
+    }).finally(() => {
+      setIsloading(false)
+    })
+  }
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Studying</Text>
-      <View style={{ gap: 8, marginTop: 10, marginBottom: 60 }}>
-        <CourseItemHorizontal isPurchased={true} />
-        <CourseItemHorizontal isPurchased={true} />
-        <CourseItemHorizontal isPurchased={true} />
-        <CourseItemHorizontal isPurchased={true} />
-        <CourseItemHorizontal isPurchased={true} />
-        <CourseItemHorizontal isPurchased={true} />
-        <CourseItemHorizontal isPurchased={true} />
-      </View>
+      {
+        isLoading
+          ? <ActivityIndicator size="large" color={currentTheme.theme['--brand']} />
+          :
+          <View style={{ gap: 8, marginTop: 10, marginBottom: 60 }}>
+            {
+              courses.map((course) => <CourseItemHorizontal key={course.id} course={course} />)
+            }
+
+          </View>
+      }
     </ScrollView>
   );
 }

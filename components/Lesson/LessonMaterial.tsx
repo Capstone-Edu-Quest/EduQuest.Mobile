@@ -1,12 +1,15 @@
+import { IMaterialOverview } from '@/interfaces/courseInterfaces';
 import { useTheme } from '@/services/hooks/useTheme';
+import { getMaterialName } from '@/utils/material';
 import { FontAwesome } from '@expo/vector-icons';
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 type Props = {
-    lessonNo: number;
+    material: IMaterialOverview;
+    i: number;
 }
 
-const LessonMaterial = ({ lessonNo }: Props) => {
+const LessonMaterial = ({ material, i }: Props) => {
     const { currentTheme } = useTheme();
 
     const styles = StyleSheet.create({
@@ -35,18 +38,18 @@ const LessonMaterial = ({ lessonNo }: Props) => {
             fontSize: 10,
             color: currentTheme.theme['--secondary-text'],
         }
-    })
+    });
 
     return (
         <View style={styles.materialContainer}>
             <View style={styles.leftContainer}>
-                <FontAwesome name="play" size={10} color={currentTheme.theme['--primary-text']} />
-                <Text style={styles.materialName}>{lessonNo}. Lesson Material</Text>
+                <FontAwesome name={getMaterialName(material.type) as any} size={10} color={currentTheme.theme['--primary-text']} />
+                <Text style={styles.materialName}>{i + 1}. {material.title}</Text>
             </View>
             <View style={styles.rightContainer}>
                 <FontAwesome name="clock-o" size={10} color={currentTheme.theme['--secondary-text']} />
                 <Text style={styles.timeText}>
-                    20 minutes
+                    {Math.ceil(material.duration)} minutes
                 </Text>
             </View>
         </View>

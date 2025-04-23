@@ -68,8 +68,8 @@ const StagesCtn = (props: Props) => {
         <View style={styles.stagesCtn}>
             {
                 [...Array(10)].map((_, index) => (
-                    <View style={{ transform: [{ translateX: calculateStageItemPosition(index) as any }], marginVertical: calculateStageItemMargin(index) }}>
-                        <StageItem key={index} status={index === currentStage ? 'current' : index < currentStage ? 'done' : 'locked'} />
+                    <View key={index} style={{ transform: [{ translateX: calculateStageItemPosition(index) as any }], marginVertical: calculateStageItemMargin(index) }}>
+                        <StageItem status={index === currentStage ? 'current' : index < currentStage ? 'done' : 'locked'} />
                     </View>
                 ))
             }

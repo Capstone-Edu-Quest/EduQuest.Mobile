@@ -9,11 +9,8 @@ import StagesCtn from '@/components/Stage/StageMaterials';
 type Props = {}
 
 const StageDetails = (props: Props) => {
-  const { courseId, stageId } = useLocalSearchParams();
   const { currentTheme } = useTheme();
   const router = useRouter();
-
-  const [currentStage, setCurrentStage] = useState<number>(Number(stageId) ?? 1);
 
   const styles = StyleSheet.create({
     container: {
@@ -44,6 +41,23 @@ const StageDetails = (props: Props) => {
       color: currentTheme.theme['--primary-text'],
     },
 
+    stageChangeSection: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 10,
+      marginVertical: 12,
+      justifyContent: 'space-between'
+    },
+    stageChangeButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 5,
+    },
+    stageChangeButtonText: {
+      fontSize: 12,
+      color: currentTheme.theme['--secondary-text'],
+    }
+
   });
 
   const onBack = () => {
@@ -59,6 +73,16 @@ const StageDetails = (props: Props) => {
         </TouchableOpacity>
         <Text style={styles.courseName} numberOfLines={1} ellipsizeMode="tail">Mastering Typescript</Text>
         <Text style={styles.stageName}>Stage 1: Basic Typescript syntax</Text>
+        <View style={styles.stageChangeSection}>
+          <TouchableOpacity style={styles.stageChangeButton}>
+            <FontAwesome name="angle-left" size={16} color={currentTheme.theme['--secondary-text']} />
+            <Text style={styles.stageChangeButtonText}>Previous</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.stageChangeButton}>
+            <Text style={styles.stageChangeButtonText}>Next</Text>
+            <FontAwesome name="angle-right" size={16} color={currentTheme.theme['--secondary-text']} />
+          </TouchableOpacity>
+        </View>
 
         <StagesCtn />
       </ScrollView>

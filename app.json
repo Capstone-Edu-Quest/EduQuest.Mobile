@@ -1,7 +1,8 @@
 {
   "expo": {
+    "owner": "khangtng.dev",
     "name": "EduQuest.Mobile-RN",
-    "slug": "EduQuest.Mobile-RN",
+    "slug": "eduquest-mobile-rn",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -9,13 +10,16 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.khangtng.eduquest",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.khangtng.eduquest"
     },
     "web": {
       "bundler": "metro",

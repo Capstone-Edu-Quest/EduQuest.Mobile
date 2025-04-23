@@ -4,13 +4,13 @@ import { useTheme } from '@/services/hooks/useTheme';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Button from './Button';
 import { router } from 'expo-router';
+import { ICourseOverview } from '@/interfaces/courseInterfaces';
 
 type Props = {
-    isPurchased?: boolean;
-    isInCart?: boolean;
+    course: ICourseOverview
 }
 
-const CourseItemHorizontal = ({ isPurchased = false, isInCart = false }: Props) => {
+const CourseItemHorizontal = ({ course }: Props) => {
     const { currentTheme } = useTheme();
 
     const styles = StyleSheet.create({
@@ -98,43 +98,34 @@ const CourseItemHorizontal = ({ isPurchased = false, isInCart = false }: Props) 
     });
 
     const onViewCourseDetails = () => {
-        router.push('/(courses)/123');
+        router.push(`/(courses)/${course.id}`);
     }
 
-    const currentStar = 3.5;
-    const progressPercentage = 20; // Example progress percentage
+    const currentStar = course.rating;
+    const percentages = Math.round(Number(course.progressPercentage));
+
     return (
         <TouchableOpacity style={styles.recommendedCoursesItem} onPress={onViewCourseDetails}>
-            <Image source={require('@/assets/images/demo-course-thumb.webp')} style={styles.recommendedCoursesItemImage} />
+            <Image source={{ uri: course.photoUrl }} style={styles.recommendedCoursesItemImage} />
             <View style={styles.recommendedCoursesItemInfo}>
-                <Text style={styles.recommendedCoursesItemTitle} numberOfLines={2} ellipsizeMode="tail">Course Name Course Name Course Name Course Name Course Name</Text>
-                <Text style={styles.recommendedCoursesItemAuthor}>Author Name</Text>
+                <Text style={styles.recommendedCoursesItemTitle} numberOfLines={2} ellipsizeMode="tail">{course.title}</Text>
+                <Text style={styles.recommendedCoursesItemAuthor}>{course.author}</Text>
                 <View style={styles.recommendedCoursesItemRating}>
-                    <Text style={styles.recommendedCoursesItemRatingText}>{currentStar}</Text>
+                    <Text style={styles.recommendedCoursesItemRatingText}>{Math.round(currentStar)}</Text>
                     {
                         Array.from({ length: 5 }).map((_, index) => (
                             <FontAwesome key={index} name="star" size={12} color={Math.floor(currentStar) > index ? currentTheme.theme['--brand-light'] : currentTheme.theme['--quaternary-text']} />
                         ))
                     }
-                    <Text style={styles.numberOfRatings}>({(11432).toLocaleString()})</Text>
+                    <Text style={styles.numberOfRatings}>({(course.totalReview).toLocaleString()})</Text>
                 </View>
 
-                {isPurchased ? (
-                    <View style={styles.progressBar}>
-                        <View style={[styles.progressFill, { width: `${progressPercentage}%` }]} />
-                        <Text style={styles.progressText}>{progressPercentage}%</Text>
-                    </View>
-                ) : (
-                    <Text style={styles.recommendedCoursesItemPrice}>$99</Text>
-                )}
-                <View style={styles.recommendedCoursesItemActions}>
-                    {!isPurchased && (
-                        <>
-                            <Button onPress={() => { }} type="primary">{isInCart ? 'Remove from cart' : 'Add to cart'}</Button>
-                            <FontAwesome name="heart" size={15} color={currentTheme.theme['--brand-light']} />
-                        </>
-                    )}
+                <View style={styles.progressBar}>
+                    <View style={[styles.progressFill, { width: `${percentages}%` }]} />
+                    <Text style={styles.progressText}>{percentages}%</Text>
                 </View>
+
+
             </View>
         </TouchableOpacity>
     )
