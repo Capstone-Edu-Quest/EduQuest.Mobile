@@ -2,10 +2,13 @@ import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { useTheme } from '@/services/hooks/useTheme'
 import { FontAwesome } from '@expo/vector-icons'
+import { IMaterialOverview } from '@/interfaces/courseInterfaces'
 
-type Props = {}
+type Props = {
+    material: IMaterialOverview
+}
 
-const StageInfoModal = (props: Props) => {
+const StageInfoModal = ({ material }: Props) => {
     const { currentTheme } = useTheme();
 
     const styles = StyleSheet.create({
@@ -24,9 +27,9 @@ const StageInfoModal = (props: Props) => {
     })
     return (
         <View style={styles.stageInfoModal}>
-            <Text style={styles.materialName}>Loops and Iterations</Text>
-            <Text style={styles.materialDescription}>Material Type: Video</Text>
-            <Text style={styles.materialDescription}><FontAwesome name="clock-o" size={12} color={currentTheme.theme['--secondary-text']} /> 10 minutes</Text>
+            <Text style={styles.materialName}>{material.title}</Text>
+            <Text style={styles.materialDescription}>Material Type: {material.type}</Text>
+            <Text style={styles.materialDescription}><FontAwesome name="clock-o" size={12} color={currentTheme.theme['--secondary-text']} /> {Math.round(material.duration)} minutes</Text>
         </View>
     )
 }

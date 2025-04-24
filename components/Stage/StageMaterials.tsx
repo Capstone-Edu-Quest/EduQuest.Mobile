@@ -1,11 +1,15 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import StageItem from './Material'
+import StageItem from './MaterialStageItem'
+import { ILessonOverview } from '@/interfaces/courseInterfaces'
 
-type Props = {}
+type Props = {
+    courseId: string;
+    lesson: ILessonOverview
+}
 
-const StagesCtn = (props: Props) => {
-    const currentStage = 3;
+const StagesCtn = ({lesson, courseId}: Props) => {
+
     const curveItems = 4;
     const styles = StyleSheet.create({
         stagesCtn: {
@@ -67,9 +71,9 @@ const StagesCtn = (props: Props) => {
     return (
         <View style={styles.stagesCtn}>
             {
-                [...Array(10)].map((_, index) => (
+                lesson.materials.map((material, index) => (
                     <View key={index} style={{ transform: [{ translateX: calculateStageItemPosition(index) as any }], marginVertical: calculateStageItemMargin(index) }}>
-                        <StageItem status={index === currentStage ? 'current' : index < currentStage ? 'done' : 'locked'} />
+                        <StageItem courseId={courseId} material={material} />
                     </View>
                 ))
             }

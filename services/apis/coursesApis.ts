@@ -12,7 +12,20 @@ export const getStudyingCourses = (accessToken: string) => {
   });
 };
 
-export const getCourseById = (courseId: string) => {
+export const getCourseById = (courseId: string, accessToken: string) => {
   const url = apisUrl + endPoints.getCourseById + "?courseId=" + courseId;
-  return axios.get(url);
+  return axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+
+export const getMaterialById = (courseId: string, accessToken: string) => {
+  const url = apisUrl + endPoints.getMaterialDetails + "?materialId=" + courseId;
+  return axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 };

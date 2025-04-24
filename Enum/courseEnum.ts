@@ -11,10 +11,10 @@ export enum CourseSortEnum {
 }
 
 export enum MaterialTypeEnum {
-    VIDEO = 1,
-    DOCUMENT,
-    QUIZ,
-    ASSIGNMENT
+    VIDEO = "Video",
+    DOCUMENT = "Document",
+    QUIZ = "Quiz",
+    ASSIGNMENT = "Assignment"
 }
 
 export enum InstructorCourseStatus {

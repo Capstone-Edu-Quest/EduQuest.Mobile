@@ -1,22 +1,27 @@
 import { useModal } from '@/services/hooks/useModal'
 import { useTheme } from '@/services/hooks/useTheme'
 import { FontAwesome } from '@expo/vector-icons'
-import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect } from 'react'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import StageInfoModal from './MaterialInfo'
+import { MissionStatus } from '@/Enum/courseEnum'
+import {  IMaterialOverview } from '@/interfaces/courseInterfaces'
+import { router } from 'expo-router'
 
 type Props = {
-    status?: 'current' | 'locked' | 'done'
+    courseId: string;
+    material: IMaterialOverview
 }
 
-const StageItem = ({ status = 'locked' }: Props) => {
+const StageItem = ({ courseId, material}: Props) => {
     const { currentTheme } = useTheme();
     const { showBottomModal } = useModal();
 
     const styles = StyleSheet.create({
         stageItem: {
             position: 'relative',
-            backgroundColor: currentTheme.theme[`--stage-body-${status}`],
+            // @ts-ignore
+            backgroundColor: currentTheme.theme[`--stage-body-${material.status.toLowerCase()}`],
             height: 65,
             width: 65,
             borderRadius: '50%'
@@ -26,7 +31,8 @@ const StageItem = ({ status = 'locked' }: Props) => {
             top: '50%',
             left: '50%',
             transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
-            backgroundColor: currentTheme.theme[`--stage-surface-${status}`],
+            // @ts-ignore
+            backgroundColor: currentTheme.theme[`--stage-surface-${material.status.toLowerCase()}`],
             borderRadius: '50%',
             height: '80%',
             width: '80%',
@@ -48,23 +54,23 @@ const StageItem = ({ status = 'locked' }: Props) => {
     })
 
     const getStageItemIcon = () => {
-        switch (status) {
-            case 'current':
+        switch (material.status) {
+            case MissionStatus.CURRENT:
                 return 'star';
-            case 'done':
+            case MissionStatus.DONE:
                 return 'check';
-            case 'locked':
+            case MissionStatus.LOCKED:
             default:
                 return 'lock'
         }
     }
 
     const getStageItemIconColor = () => {
-        switch (status) {
-            case 'current':
-            case 'done':
+        switch (material.status) {
+            case MissionStatus.CURRENT:
+            case MissionStatus.DONE:
                 return currentTheme.theme['--primary-text'];
-            case 'locked':
+            case MissionStatus.LOCKED:
             default:
                 return currentTheme.theme['--alert']
         }
@@ -72,21 +78,21 @@ const StageItem = ({ status = 'locked' }: Props) => {
 
     const handleShowStageInfoModal = () => {
         showBottomModal(
-            <StageInfoModal />
+            <StageInfoModal material={material} />
         )
     }
 
     const handleViewMaterialInfo = () => {
-
+        router.push(`/(courses)/${courseId}/stages/${material.id}`)
     }
 
     const handlePressAction = () => {
-        switch (status) {
-            case 'current':
-            case 'done':
+        switch (material.status) {
+            case MissionStatus.CURRENT:
+            case MissionStatus.DONE:
                 handleViewMaterialInfo();
                 break;
-            case 'locked':
+            case MissionStatus.LOCKED:
             default:
                 handleShowStageInfoModal();
         }

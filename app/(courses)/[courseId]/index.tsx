@@ -3,6 +3,7 @@ import LessonItem from '@/components/Lesson/LessonItem';
 import { ICourse } from '@/interfaces/courseInterfaces';
 import { getCourseById } from '@/services/apis/coursesApis';
 import { useTheme } from '@/services/hooks/useTheme';
+import { useUserStore } from '@/store/userStore';
 import { FontAwesome } from '@expo/vector-icons';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react'
@@ -14,6 +15,7 @@ const courseDetailts = (props: Props) => {
   const { courseId } = useLocalSearchParams();
   const { currentTheme } = useTheme();
   const router = useRouter();
+  const { token } = useUserStore();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [course, setCourse] = useState<ICourse | null>(null)
@@ -28,7 +30,7 @@ const courseDetailts = (props: Props) => {
     if (!courseId) return;
 
     setIsLoading(true);
-    getCourseById(courseId as string).then(res => {
+    getCourseById(courseId as string, token?.accessToken as string).then(res => {
       const { errors, isError, message, payload } = res.data;
 
 
@@ -189,7 +191,7 @@ const courseDetailts = (props: Props) => {
             <Text style={styles.title}>{course?.title}</Text>
             <View style={styles.row}>
               <View style={styles.recommendedCoursesItemRating}>
-                <Text style={styles.recommendedCoursesItemRatingText}>{course?.rating ?? 0}</Text>
+                <Text style={styles.recommendedCoursesItemRatingText}>{course?.rating.toFixed(1) ?? 0}</Text>
                 {
                   Array.from({ length: 5 }).map((_, index) => (
                     <FontAwesome key={index} name="star" size={12} color={Math.floor(course?.rating ?? 0) > index ? currentTheme.theme['--brand-light'] : currentTheme.theme['--quaternary-text']} />
@@ -237,7 +239,6 @@ const courseDetailts = (props: Props) => {
 
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Lessons</Text>
-              {/* <Text style={styles.sectionText}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</Text> */}
             </View>
 
             <View style={styles.lessonContainer}>

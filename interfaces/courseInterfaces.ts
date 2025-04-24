@@ -1,6 +1,6 @@
 /** @format */
 
-import { InstructorCourseStatus, MissionStatus } from "@/Enum/courseEnum";
+import { InstructorCourseStatus, MaterialTypeEnum, MissionStatus } from "@/Enum/courseEnum";
 
 export interface ICourseOverview {
   id: string;
@@ -75,4 +75,78 @@ export interface ITag {
   id: string;
   name: string;
   courses?: number;
+}
+
+export interface ILearningMaterial {
+  id?: string;
+  type: MaterialTypeEnum;
+  status?: MissionStatus;
+  title: string;
+  description: string;
+  video?: video;
+  content?: string;
+  quiz?: quiz;
+  assignment?: assignment;
+}
+
+interface video {
+  urlMaterial: string;
+  duration?: number;
+  thumbnail?: string;
+}
+
+interface quiz {
+  id?: string;
+  timeLimit: number;
+  passingPercentage: number;
+  questions: questions[];
+}
+
+interface questions {
+  id?: string;
+  questionTitle: string;
+  multipleAnswers: boolean;
+  answers: answers[];
+}
+
+interface answers {
+  answerContent: string;
+  isCorrect: boolean;
+  id?: string;
+}
+
+export interface assignment {
+  id?: string;
+  timeLimit?: number;
+  question?: string;
+  answerLanguage?: string;
+  expectedAnswer?: string;
+}
+
+export interface ISubmitQuizReq {
+  quizId: string;
+  totalTime: number;
+  answers: { questionId: string; answerId: string }[];
+}
+
+export interface ISubmittedQuestResponse {
+  attemptNo: number;
+  correctAnswers: number;
+  incorrectAnswers: number;
+  isPassed: boolean;
+  percentage: number;
+  submitAt: string; // ISO 8601 date string
+  totalTime: number; // in seconds or minutes, depending on your context
+}
+
+export interface ISubmitAssignment {
+  assignmentId: string;
+  totalTime: number;
+  answerContent: string;
+}
+
+export interface ISubmitQuizReq {
+  quizId: string;
+  totalTime: number;
+  answers: { questionId: string; answerId: string }[];
 }
