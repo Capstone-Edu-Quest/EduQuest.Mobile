@@ -8,7 +8,7 @@ import { useUserStore } from '@/store/userStore';
 import { FontAwesome } from '@expo/vector-icons';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, SafeAreaView, Alert, ActivityIndicator, Platform } from 'react-native';
 
 type Props = {}
 
@@ -51,7 +51,9 @@ const courseDetailts = (props: Props) => {
   const styles = StyleSheet.create({
     scrollView: {
       flex: 1,
-      paddingHorizontal: 12, boxSizing: 'border-box'
+      paddingHorizontal: 12, 
+      boxSizing: 'border-box',
+      paddingTop: Platform.OS === 'android' ? 24 : 'auto'
     },
     title: {
       color: currentTheme.theme['--primary-text'],
@@ -169,7 +171,7 @@ const courseDetailts = (props: Props) => {
   ]
 
   const onBack = () => {
-    router.back();
+    router.push('/(tabs)/studying');
   }
 
   return (

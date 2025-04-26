@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@/services/hooks/useTheme';
 
@@ -8,6 +8,7 @@ type Props = {};
 
 const CustomHeaderBar = (props: Props) => {
     const { currentTheme } = useTheme();
+    
     const router = useRouter();
 
     const styles = StyleSheet.create({
@@ -28,7 +29,8 @@ const CustomHeaderBar = (props: Props) => {
             shadowOpacity: 0.2,
             shadowRadius: 2,
             elevation: 5,
-            paddingBottom: 12
+            paddingBottom: 12,
+            paddingTop: Platform.OS === 'android' ? 24 : 0
         },
         logoContainer: {
             flexDirection: 'row',

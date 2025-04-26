@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, StyleSheet, View, Switch } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, Switch, Platform } from 'react-native';
 import { useTheme } from '@/services/hooks/useTheme';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Button from '@/components/Button';
@@ -29,7 +29,7 @@ const ProfileScreen = (props: Props) => {
         container: {
             position: 'relative',
             flex: 1,
-            paddingTop: 50,
+            paddingTop: 50 + (Platform.OS === 'android' ? 24 : 0),
             boxSizing: 'border-box',
             backgroundColor: currentTheme.theme['--primary-bg'],
         },

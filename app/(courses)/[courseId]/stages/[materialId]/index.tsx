@@ -5,8 +5,8 @@ import { useAppreanceStore } from '@/store/apprearanceStore';
 import { useUserStore } from '@/store/userStore';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, Alert, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { Video } from 'expo-av';
+import { ActivityIndicator, Alert, Dimensions, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ResizeMode, Video } from 'expo-av';
 import { useWindowDimensions } from 'react-native';
 import RenderHTML from 'react-native-render-html';
 import Button from '@/components/Button';
@@ -156,7 +156,7 @@ const index = (props: Props) => {
     })
 
     return (
-        <SafeAreaView key={materialId.toString()}>
+        <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 24 : 'auto' }} key={materialId.toString()}>
             <TouchableOpacity style={styles.backButton} onPress={onBack}>
                 <FontAwesome name="angle-left" size={20} color={currentTheme.theme['--secondary-text']} />
                 <Text style={styles.backButtonText}>Back to lessons</Text>
@@ -195,6 +195,8 @@ const VideoComponent = ({ material, triggerToNextMaterial, triggerIsDone }: { ma
     const { viewingCourse } = useCourseStore();
     const { token } = useUserStore();
 
+    const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
     const video = useRef(null);
     const triggerDoneRef = useRef<boolean>(false)
 
@@ -224,12 +226,14 @@ const VideoComponent = ({ material, triggerToNextMaterial, triggerIsDone }: { ma
                 && <ActivityIndicator size="large" color={currentTheme.theme['--brand']} />
 
             }
+
             <Video
                 ref={video}
-                onLoad={() => setIsLoading(false)}
                 source={{ uri: material.video?.urlMaterial as string }}
                 useNativeControls
-                style={{ width: '100%', height: 260 }}
+                resizeMode={ResizeMode.CONTAIN}
+                style={{ width: SCREEN_WIDTH, height: 260 }}
+                onLoad={() => setIsLoading(false)}
                 onPlaybackStatusUpdate={onTriggerPlayVideo}
             />
 

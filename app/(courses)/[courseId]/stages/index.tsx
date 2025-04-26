@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, SafeAreaView, Alert, ActivityIndicator, Platform } from 'react-native';
 import { useTheme } from '@/services/hooks/useTheme';
 import StagesCtn from '@/components/Stage/StageMaterials';
 import { ICourse } from '@/interfaces/courseInterfaces';
@@ -96,7 +96,7 @@ const StageDetails = (props: Props) => {
   }
 
   const onBack = () => {
-    router.back();
+    router.push(`/(courses)/${courseId}`);
   }
 
   const onChangeLesson = (value: number) => {
@@ -104,7 +104,7 @@ const StageDetails = (props: Props) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, }}>
+    <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === 'android' ? 24 : 'auto' }}>
       {
         isLoading
           ? <ActivityIndicator size="large" color={currentTheme.theme['--brand']} />

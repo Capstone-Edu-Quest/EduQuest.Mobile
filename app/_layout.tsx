@@ -7,8 +7,13 @@ import { ThemeProvider } from '@react-navigation/native';
 import { useTheme } from '@/services/hooks/useTheme';
 import { StatusBar } from 'expo-status-bar';
 import BottomModal from '@/components/BottomModal';
-import { useEffect } from 'react';
 import { useUserStore } from '@/store/userStore';
+import { LogBox } from 'react-native';
+
+// Ignore specific warnings
+LogBox.ignoreLogs([
+  'TNodeChildrenRenderer: Support for defaultProps will be removed'
+]);
 
 export default function RootLayout() {
   const { user } = useUserStore();
