@@ -3,6 +3,7 @@ import LessonItem from '@/components/Lesson/LessonItem';
 import { ICourse } from '@/interfaces/courseInterfaces';
 import { getCourseById } from '@/services/apis/coursesApis';
 import { useTheme } from '@/services/hooks/useTheme';
+import { useCourseStore } from '@/store/courseStore';
 import { useUserStore } from '@/store/userStore';
 import { FontAwesome } from '@expo/vector-icons';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
@@ -16,6 +17,7 @@ const courseDetailts = (props: Props) => {
   const { currentTheme } = useTheme();
   const router = useRouter();
   const { token } = useUserStore();
+  const { setViewingCourse } = useCourseStore();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [course, setCourse] = useState<ICourse | null>(null)
@@ -39,7 +41,8 @@ const courseDetailts = (props: Props) => {
         return
       }
 
-      setCourse(payload)
+      setCourse(payload);
+      setViewingCourse(payload)
     }).finally(() => {
       setIsLoading(false)
     })

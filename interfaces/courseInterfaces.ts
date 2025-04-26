@@ -150,3 +150,10 @@ export interface ISubmitQuizReq {
   totalTime: number;
   answers: { questionId: string; answerId: string }[];
 }
+
+export interface IMarkedAssignment {
+  id: string;
+  toTalTime: number;
+  answerScore: number;
+  answerContent: string;
+}
