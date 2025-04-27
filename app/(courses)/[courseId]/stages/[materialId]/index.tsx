@@ -1,4 +1,4 @@
-import { MaterialTypeEnum } from '@/Enum/courseEnum';
+import { MaterialTypeEnum, MissionStatus } from '@/Enum/courseEnum';
 import { ICourse, ILearningMaterial, IMarkedAssignment, ISubmitAssignment, ISubmitQuizReq, ISubmittedQuestResponse } from '@/interfaces/courseInterfaces';
 import { getMaterialById, getMyAssignment, markMaterialAsDone, onSubmitAssignment, onSubmitQuiz } from '@/services/apis/coursesApis';
 import { useAppreanceStore } from '@/store/apprearanceStore';
@@ -30,6 +30,18 @@ const getLessonIdByMaterialId = (courseDetails: ICourse, materialId: string) => 
     return lessonId;
 }
 
+const getCurrentMaterialOverview = (courseDetails: ICourse, materialId: string) => {
+    for (const lesson of courseDetails.listLesson) {
+        const material = lesson.materials.find(
+            (m) => m.id === materialId
+        );
+        if (material) {
+            return material;
+        }
+    }
+    return null;
+}
+
 const index = (props: Props) => {
     const { currentTheme } = useAppreanceStore();
     const { token } = useUserStore();
@@ -57,7 +69,13 @@ const index = (props: Props) => {
                 return
             }
 
-            setMaterial(payload);
+            const material = getCurrentMaterialOverview(viewingCourse as ICourse, materialId as string)
+            setMaterial({ ...payload, status: material?.status });
+
+            if (material?.status === MissionStatus.DONE) {
+                triggerIsDone();
+            }
+
         }).finally(() => {
             setIsLoading(false)
         })
@@ -203,6 +221,10 @@ const VideoComponent = ({ material, triggerToNextMaterial, triggerIsDone }: { ma
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const onTriggerPlayVideo = (status: any) => {
+        if (material.status === MissionStatus.DONE) {
+            return;
+        }
+
         if (status.isLoaded) {
             const progress = (status.positionMillis / 1000) / (Number(material.video?.duration) * 60);
             if (progress >= 0.8 && !triggerDoneRef.current) {
@@ -252,6 +274,9 @@ const DocumentComponent = ({ material, triggerToNextMaterial, triggerIsDone }: {
     const [countdown, setCountdown] = useState<number>(30);
 
     useEffect(() => {
+        if (material.status === MissionStatus.DONE) {
+            return;
+        }
         const interval = setInterval(() => {
             setCountdown(prev => {
                 if (prev === 0) {
